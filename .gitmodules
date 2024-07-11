@@ -1,0 +1,3 @@
+[submodule "train/preliminary/deepsme_preliminary_basecaller"]
+	path = train/preliminary/deepsme_preliminary_basecaller
+	url = https://github.com/sparkcyf/deepsme_preliminary_basecaller
