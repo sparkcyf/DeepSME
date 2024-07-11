@@ -9,6 +9,13 @@ We have proposed and verified a scheme for high-informative secure communication
 
 ## Install
 
+### Clone the repository
+
+``` bash
+git clone https://github.com/sparkcyf/DeepSME.git
+git submodule update --init --recursive
+```
+
 Four conda environment may be required to install:
 
 1. **tombo-py37** environment for align the reference sequence to current. plase refer to [Document of Tombo](https://github.com/nanoporetech/tombo). You may need to lock the python version to 3.7 to successfully install it.
@@ -22,13 +29,16 @@ You can download the model weight and dataset chunks from [https://doi.org/10.52
 
 Raw fast5 data are available on reasonable requests.
 
-If you just want to test the basecaller, you can download the model weight and jump to the [Basecalling](#Basecalling) section.
+> [!TIP]
+> If you just want to test the basecaller, you can download the model weight from Zenodo and jump to the [Basecalling](#Basecalling) section.
 
 ## Train
 
 ### Preliminary Basecaller
 
 Train the Preliminary Basecaller:
+
+You need to run the training script with a `preliminary_basecaller-py311` environment. The install instructions can be found in `train/preliminary/deepsme_preliminary_basecaller/` folder.
 
 ``` python
 python ./scripts/train_original.py \
@@ -61,6 +71,9 @@ See `train/preliminary/kmer_extraction/extract_kmer_hpc.py` and `train/prelimina
 
 After the backtrace and alignment, you shall get the kmers of the 5hmC modified DNA. You can use this kmer to replace the original kmer in the `legacy/legacy_r9.4_180mv_450bps_6mer/template_median68pA.model` from [https://github.com/nanoporetech/kmer_models/](https://github.com/nanoporetech/kmer_models/) . You can also use this kmer to generate the simulated current and train the Enhanced Basecaller.
 
+> [!TIP]
+> You can also directly use the extracted k-mers in `train/preliminary/kmer_extraction/kmer_models` to current align and simulate software like `tombo`, `nanopolish` or `squigulator`.
+
 ### Enhanced Basecaller
 
 #### Generate simulated current data
@@ -69,7 +82,7 @@ You can use squigulator or other current simulator to generate the simulated cur
 ``` bash
 BIN_PATH="squigulator-v0.3.0/squigulator"
 FASTA_PATH="reference.fasta"
-PARAM="-x dna-r9-min --kmer-model kmer_model.csv -o blow5/simulated_current.blow5 -q blow5/simulated_current.fasta -f 2 --seed 1711350749  -t 32"
+PARAM="-x dna-r9-min --kmer-model dna_r9.4.1_400bps_6mer_5hmc.csv -o blow5/simulated_current.blow5 -q blow5/simulated_current.fasta -f 2 --seed 1711350749  -t 32"
 # RUN
 $BIN_PATH $FASTA_PATH $PARAM
 ```
@@ -112,7 +125,9 @@ reinforced_basecaller_model/
 ```
 
 ## Basecalling
-The model architecture and weight of DeepSME is compatible with Bonito. You may use bonito or bonito-compatible basecaller to basecall the sequence current.
+
+> [!TIP]
+> The model architecture and weight of DeepSME is compatible with Bonito. You may use bonito or bonito-compatible basecaller to basecall the sequence current.
 
 ### Aligned (Output BAM)
 ``` python3
