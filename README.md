@@ -18,7 +18,7 @@ git submodule update --init --recursive
 
 ### Prepare the conda environment
 
-> [!INFO]
+> [!NOTE]
 > You need a CUDA compatible GPU to train the model. To train the preliminary basecaller, you need at least 12GB GPU memory. To train the enhanced and reinforced basecaller, you need at least 24GB GPU memory.
 
 Four conda environment may be required to install:
