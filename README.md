@@ -16,12 +16,17 @@ git clone https://github.com/sparkcyf/DeepSME.git
 git submodule update --init --recursive
 ```
 
+### Prepare the conda environment
+
+> [!INFO]
+> You need a CUDA compatible GPU to train the model. To train the preliminary basecaller, you need at least 12GB GPU memory. To train the enhanced and reinforced basecaller, you need at least 24GB GPU memory.
+
 Four conda environment may be required to install:
 
-1. **tombo-py37** environment for align the reference sequence to current. plase refer to [Document of Tombo](https://github.com/nanoporetech/tombo). You may need to lock the python version to 3.7 to successfully install it.
-2. **preliminary_basecaller-py311** environment for train and infer the Preliminary Basecaller
-3. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito)
-4. **uncalled4-py310** environment for generate the k-mer table of 5hmC modified DNA. plase refer to [Document of Uncalled4](https://github.com/skovaka/uncalled4)
+1. **tombo-py37** environment for align the reference sequence to current. plase refer to [Document of Tombo](https://github.com/nanoporetech/tombo) to install the environment. You may need to lock the python version to 3.7 to successfully install it.
+2. **preliminary_basecaller-py311** environment for train and infer the Preliminary Basecaller. You can find the environment file [here](https://github.com/sparkcyf/deepsme_preliminary_basecaller/blob/7170375754d8c3b31a4b89ee3001bbf3315c5dac/environment.yml).
+3. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito) to install the environment.
+4. **uncalled4-py310** environment for generate the k-mer table of 5hmC modified DNA. plase refer to [Document of Uncalled4](https://github.com/skovaka/uncalled4) to install the environment.
 
 ## Datasets and model weight
 
@@ -156,4 +161,18 @@ bonito basecaller \
 --device cuda:0 \
 reinforced_basecaller_model/ \
 fast5_or_pod5_reads/ > basecalling.fastq
+```
+
+## Citation
+
+If you use DeepSME in your research, please cite:
+
+``` bibtex
+@article{fan2024deepsme,
+  title={DeepSME: De Novo Nanopore Basecalling of Motif Insensitive DNA Modifications And Alignment-free Digital Information Decryptions at Single-Molecule Level},
+  author={},
+  journal={bioRxiv},
+  year={2024},
+  publisher={}
+}
 ```
