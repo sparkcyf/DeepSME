@@ -68,12 +68,16 @@ fast5_or_pod5_reads/ > basecalling.fastq
 If you use DeepSME in your research, please cite:
 
 ``` bibtex
-@article{fan2024deepsme,
-  title={DeepSME: De Novo Nanopore Basecalling of Motif Insensitive DNA Modifications And Alignment-free Digital Information Decryptions at Single-Molecule Level},
-  author={},
-  journal={bioRxiv},
-  year={2024},
-  publisher={}
+@article {Fan2024.08.15.606762,
+	author = {Fan, Qingyuan and Zhao, Xuyang and Li, Junyao and Liu, Ronghui and Liu, Ming and Long, Yanping and Fu, Yang and Feng, Qishun and Zhai, Jixian and Pan, Qing and Li, Yi},
+	title = {DeepSME: De Novo Nanopore Basecalling of Motif-insensitive DNA Methylation and Alignment-free Digital Information Decryptions at Single-Molecule Level},
+	elocation-id = {2024.08.15.606762},
+	year = {2024},
+	doi = {10.1101/2024.08.15.606762},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2024/08/17/2024.08.15.606762},
+	eprint = {https://www.biorxiv.org/content/early/2024/08/17/2024.08.15.606762.full.pdf},
+	journal = {bioRxiv}
 }
 ```
 
