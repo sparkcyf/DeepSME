@@ -5,7 +5,7 @@
 ---
 We have proposed and verified a scheme for high-informative secure communication combining DNA methylation induced information encryption and nanopore sequencing based decryption, via de novo assembly of a private DeepSME basecaller.
 
-## TOC and folder structure
+In short, this basecaller model can basecall the fully 5hmC modified DNA sequence with high accuracy.
 
 ## Install
 
@@ -13,121 +13,21 @@ We have proposed and verified a scheme for high-informative secure communication
 
 ``` bash
 git clone https://github.com/sparkcyf/DeepSME.git
-git submodule update --init --recursive
 ```
 
 ### Prepare the conda environment
 
 > [!NOTE]
-> You need a CUDA compatible GPU to train the model. To train the preliminary basecaller, you need at least 12GB GPU memory. To train the enhanced and reinforced basecaller, you need at least 24GB GPU memory.
+> You need a CUDA compatible GPU to train and infer the model. We recommend using a GPU with at least 12GB of memory.
 
-Four conda environment may be required to install:
+The following conda environment may be required to install:
 
-1. **tombo-py37** environment for align the reference sequence to current. plase refer to [Document of Tombo](https://github.com/nanoporetech/tombo) to install the environment. You may need to lock the python version to 3.7 to successfully install it.
-2. **preliminary_basecaller-py311** environment for train and infer the Preliminary Basecaller. You can find the environment file [here](https://github.com/sparkcyf/deepsme_preliminary_basecaller/blob/7170375754d8c3b31a4b89ee3001bbf3315c5dac/environment.yml).
-3. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito) to install the environment.
-4. **uncalled4-py310** environment for generate the k-mer table of 5hmC modified DNA. plase refer to [Document of Uncalled4](https://github.com/skovaka/uncalled4) to install the environment.
+1. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito) to install the environment. We have tested the model on `bonito 0.81` with `python 3.8`, `cuda 11.8`.
+2. **uncalled4-py310** environment for generate the k-mer table of 5hmC modified DNA. plase refer to [Document of Uncalled4](https://github.com/skovaka/uncalled4) to install the environment.
 
-## Datasets and model weight
+## Model weight
 
-You can download the model weight and dataset chunks from [https://doi.org/10.5281/zenodo.12704171](https://doi.org/10.5281/zenodo.12704171).
-
-Raw fast5 data are available on reasonable requests.
-
-> [!TIP]
-> If you just want to test the basecaller, you can download the model weight from Zenodo and jump to the [Basecalling](#Basecalling) section.
-
-## Train
-
-### Preliminary Basecaller
-
-Train the Preliminary Basecaller:
-
-You need to run the training script with a `preliminary_basecaller-py311` environment. The install instructions can be found in `train/preliminary/deepsme_preliminary_basecaller/` folder.
-
-``` python
-python ./scripts/train_original.py \
---data-dir preliminary_datasets_dir \
---output-dir model_dir \
---model bonito \
---window-size 2000 \
---batch-size 128 \
---use-scaler \
---num-epochs 50 \
---starting-lr 0.0005 \
---overwrite
-```
-Use Preliminary Basecaller to basecall the 6-mer QC Sequence get the CTC data:
-
-``` python
-python ./scripts/basecall_original.py \
---fast5-dir fast5_dir  \
---checkpoint model_dir/<best_checkpoint.pt> \
---model bonito \
---chunk-size 2000 \
---window-overlap 400 \
---batch-size 32 \
---output-file fastq_folder/basecalling_preliminary.fastq
-```
-
-#### Backtrace the CTC data
-
-See `train/preliminary/kmer_extraction/extract_kmer_hpc.py` and `train/preliminary/kmer_extraction/extract_kmer_hpc_merge_pkl.py` . You may need to run it with a `mpi4py` and `dtaidistance` (we recommend you install these package in `tombo-py37` environment). 
-
-After the backtrace and alignment, you shall get the kmers of the 5hmC modified DNA. You can use this kmer to replace the original kmer in the `legacy/legacy_r9.4_180mv_450bps_6mer/template_median68pA.model` from [https://github.com/nanoporetech/kmer_models/](https://github.com/nanoporetech/kmer_models/) . You can also use this kmer to generate the simulated current and train the Enhanced Basecaller.
-
-> [!TIP]
-> You can also directly use the extracted k-mers in `train/preliminary/kmer_extraction/kmer_models` to current align and simulate software like `tombo`, `nanopolish` or `squigulator`.
-
-### Enhanced Basecaller
-
-#### Generate simulated current data
-
-You can use squigulator or other current simulator to generate the simulated current data. Then you need to use tombo to generate chunks from the simulated current data.
-``` bash
-BIN_PATH="squigulator-v0.3.0/squigulator"
-FASTA_PATH="reference.fasta"
-PARAM="-x dna-r9-min --kmer-model dna_r9.4.1_400bps_6mer_5hmc.csv -o blow5/simulated_current.blow5 -q blow5/simulated_current.fasta -f 2 --seed 1711350749  -t 32"
-# RUN
-$BIN_PATH $FASTA_PATH $PARAM
-```
-#### Train Enhanced Basecaller
-``` python
-bonito train \
---epochs 1 \
---lr 5e-6 \
---pretrained dna_r9.4.1_e8_sup@v3.3 \
---directory squigulator_chunks \
-enhanced_basecaller_model
-```
-
-### Reinforced Basecaller
-
-#### Build Datasets
-
-``` python
-bonito basecaller \
-enhanced_basecaller_model \
---device cuda:0 \
---save-ctc \
---reference gDNA_reference.fasta \
---min-accuracy-save-ctc 0.7 \
---chunksize 3600 \
-gDNA_fast5 > reinforced_basecaller_chunks/basecalls.sam
-```
-
-#### Train Reinforced Basecaller
-
-``` python
-bonito train \
---epochs 5 \
---lr 5e-4 \
---batch 128 \
---device cuda:0 \
---pretrained dna_r9.4.1_e8_sup@v3.3 \
---directory reinforced_basecaller_chunks/ \
-reinforced_basecaller_model/
-```
+You can view and download the config and the weight of the model for 5hmC from [this link](https://assets.sparktour.me/doc/publication/reinforced_basecaller_model_5hmc.tar.gz), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model.
 
 ## Basecalling
 
@@ -176,3 +76,4 @@ If you use DeepSME in your research, please cite:
   publisher={}
 }
 ```
+
