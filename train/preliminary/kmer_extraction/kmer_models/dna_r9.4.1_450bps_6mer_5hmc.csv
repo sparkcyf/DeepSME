@@ -2,7 +2,6 @@
 #kit    r9.4_450bps
 #strand template
 #k      6
-#original_file  r9.4_180mv_450bps_6mer/template_median68pA.model
 kmer	level_mean	level_stdv	sd_mean	sd_stdv	weight
 AAAAAA	90.508879556903	1.5999450446389767	0.941478	0.609357	4739.559092
 AAAAAC	87.8291579721908	1.5999450446389767	1.077051	0.745608	3403.762207
