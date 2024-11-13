@@ -44,16 +44,6 @@ reinforced_basecaller_model/ \
 fast5_or_pod5_reads/ > basecalling.bam
 ```
 
-#### K-mer model extraction use uncalled4
-``` python
-uncalled4 train reference.fasta \
-gDNA_fast5/ \
---bam-in basecalling.bam \
--m dna_r9.4.1_400bps_tombo.DNA.model.20240419_5hmC_central3mer.npz \
--p 16 -k 6 --kmer-shift 3 --out-dir kmer_5hmC.k6 \
---train-iterations 5 --init-mode moves
-```
-
 ### Unaligned (Output fastq)
 ``` python
 bonito basecaller \
@@ -61,6 +51,17 @@ bonito basecaller \
 --device cuda:0 \
 reinforced_basecaller_model/ \
 fast5_or_pod5_reads/ > basecalling.fastq
+```
+
+#### K-mer model extraction use uncalled4 based on 5hmC-modified 6-mer model (Optional)
+
+``` python
+uncalled4 train reference.fasta \
+gDNA_fast5/ \
+--bam-in basecalling.bam \
+-m dna_r9.4.1_400bps_tombo.DNA.model.20240419_5hmC_central3mer.npz \
+-p 16 -k 6 --kmer-shift 3 --out-dir kmer_5hmC.k6 \
+--train-iterations 5 --init-mode moves
 ```
 
 ## Citation
