@@ -1,0 +1,31 @@
+#!/bin/bash
+#BSUB -J 6mer
+#BSUB -o log/%J.out
+#BSUB -e log/%J.err
+#BSUB -q short
+#BSUB -n 160
+
+module purge
+
+source ~/.bashrc
+source ~/mambaforge/etc/profile.d/conda.sh
+
+conda activate tombo-py37
+
+# intel mpi
+module load gcc/8.2.0
+module load mpi/intel/2018.4 intel/2018.4
+export MPICC=$(which mpicc)
+
+# mpirun
+
+export JOB_MAGICK_NAME=kmer_extarction_6mer_5hmC
+export BASECALLING_SUMMARY_FN=basecalling_smmary.csv
+export FAST5_FOLDER=6mer_QC_sequence_fast5_dir/
+export CTC_TRACE_FOLDER=your_ctc_trace_folder/
+export SEQ_LEN_MIN=800
+export SEQ_LEN_MAX=1600
+
+mpirun -np 160 python3 extract_kmer_hpc.py
+# merge pkl
+# python3 extract_kmer_hpc_merge_pkl.py

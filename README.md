@@ -22,11 +22,11 @@ git clone https://github.com/sparkcyf/DeepSME.git
 The following conda environment may be required to install:
 
 1. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito) to install the environment. We have tested the model on `bonito 0.81` with `python 3.8`, `cuda 11.8`.
-2. **uncalled4-py310** environment for generate the k-mer table of 5hmC modified DNA. plase refer to [Document of Uncalled4](https://github.com/skovaka/uncalled4) to install the environment.
+2. **tombo-py37** environment for generate the k-mer table for 5hmC modified DNA. plase refer to [Document of Tombo](https://github.com/nanoporetech/tombo) to install the environment.
 
 ## Model weight and 5hmC-modified DNA Storage Datasets
 
-You can view and download the config and the weight of the model for 5hmC DeepSME and some sequencing pos5 file, basecalled fastq files from [this link](https://mirrors.sustech.edu.cn/site/datasets-share/deepsme/), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model. You can also check the raw sequence data and decode scripts of 5hmC-modified DNA Storage Datasets at https://github.com/sparkcyf/DeepSME_DNA_Storage_Decode_scripts_DeepSME .
+You can view and download the config and the weight of the model for 5hmC DeepSME and some sequencing pod5 file, basecalled fastq files from [this link](https://mirrors.sustech.edu.cn/site/datasets-share/deepsme/), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model. You can also check the raw sequence data and decode scripts of 5hmC-modified DNA Storage Datasets at https://github.com/sparkcyf/DeepSME_DNA_Storage_Decode_scripts_DeepSME .
 
 
 ## Usage of 5hmC DeepSME Basecaller

@@ -11,16 +11,10 @@ to run the script (take caution to the tqdm and pkl output files, you may want t
 mpirun -np 160 python3 extract_kmer_hpc.py
 
 """
-from dtaidistance import dtw
-from dtaidistance.subsequence.dtw import subsequence_alignment
-from dtaidistance.subsequence.dtw import subsequence_search
-from dtaidistance import preprocessing
-from dtaidistance import dtw_visualisation as dtwvis
 import random
 import numpy as np
 from scipy import signal
 from scipy import stats
-import seaborn as sns
 from lib import fast5_processing
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -31,7 +25,6 @@ import os
 import h5py, mappy
 import time
 import ctc_segmentation
-# from multiprocessing import Pool
 from mpi4py import MPI
 import sys
 import pickle
