@@ -14,6 +14,8 @@ conda env create -f environment.yml
 
 3. Training Preliminary Basecallers
 
+Once gathered enough current and reference chunks (in format of [marcpaga/basecalling_architectures](https://github.com/marcpaga/basecalling_architectures/?tab=readme-ov-file#chunk-the-raw-signal-and-save-it-numpy-arrays)) by using “constant velocity assumption” to segment the current and reference sequence, you can use the command and the code on the GitHub to train the preliminary basecaller and extract CTC data from them as follows:
+
 ``` python
 python ./scripts/train_original.py \
 --data-dir preliminary_datasets_dir \
