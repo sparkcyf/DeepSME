@@ -26,7 +26,7 @@ The following conda environment may be required to install:
 
 ## Model weight and 5hmC-modified DNA Storage Datasets
 
-You can view and download the config, weight of the model for 5hmC DeepSME, sequencing pod5 file (raw sequencing current) and basecalled fastq files from this link (https://mirrors.sustech.edu.cn/site/datasets-share/deepsme/), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model. You can also check the raw sequence data and decode scripts of 5hmC-modified DNA Storage Datasets at https://github.com/sparkcyf/DeepSME_DNA_Storage_Decode_scripts_DeepSME .
+You can view and download the config, weight of the model for 5hmC DeepSME, sequencing pod5 file (raw sequencing current) and basecalled fastq files from this link (https://mirrors.sustech.edu.cn/site/datasets-share/deepsme/), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model. You can also check the raw sequence data and decode scripts of 5hmC-modified DNA Storage Datasets at https://github.com/sparkcyf/DeepSME_DNA_Storage_Decode_scripts .
 
 
 ## Usage of 5hmC DeepSME Basecaller
