@@ -19,7 +19,7 @@ git clone https://github.com/sparkcyf/DeepSME.git
 > [!NOTE]
 > You need a CUDA compatible GPU to train and infer the model. We recommend using a GPU with at least 12GB of memory.
 
-> [!INFO]
+> [!NOTE]
 > Installation of these conda environments will take about **10** minutes on an x86 server (AMD Ryzen 9 5950X with 128G of RAM and SSD).
 
 The following conda environment may be required to install:
