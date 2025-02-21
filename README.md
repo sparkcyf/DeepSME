@@ -19,6 +19,9 @@ git clone https://github.com/sparkcyf/DeepSME.git
 > [!NOTE]
 > You need a CUDA compatible GPU to train and infer the model. We recommend using a GPU with at least 12GB of memory.
 
+> [!INFO]
+> Installation of these conda environments will take about **10** minutes on an x86 server (AMD Ryzen 9 5950X with 128G of RAM and SSD).
+
 The following conda environment may be required to install:
 
 1. **bonito-py38** environment for train and infer the Enhanced Basecaller and Reinforced Basecaller. plase refer to [Document of Bonito](https://github.com/nanoporetech/bonito) to install the environment. We have tested the model on `bonito 0.81` with `python 3.8`, `cuda 11.8`.
@@ -28,7 +31,6 @@ The following conda environment may be required to install:
 
 You can view and download the config, weight of the model for 5hmC DeepSME, sequencing pod5 file (raw sequencing current) and basecalled fastq files from this link (https://mirrors.sustech.edu.cn/site/datasets-share/deepsme/), then use `tar -xvf reinforced_basecaller_model_5hmc.tar.gz` to extract the model. You can also check the raw sequence data and decode scripts of 5hmC-modified DNA Storage Datasets at https://github.com/sparkcyf/DeepSME_DNA_Storage_Decode_scripts .
 
-
 ## Usage of 5hmC DeepSME Basecaller
 
 ### Basecalling
@@ -37,27 +39,47 @@ You can view and download the config, weight of the model for 5hmC DeepSME, sequ
 > The model architecture and weight of DeepSME is compatible with Bonito. You may use bonito or bonito-compatible basecaller to basecall the sequence current.
 
 #### Aligned (Output BAM)
-``` python3
+``` shell
+# Bonito
 bonito basecaller \
 --chunksize 3600 \
 --device cuda:0 \
 --reference reference.fasta \
 reinforced_basecaller_model/ \
 fast5_or_pod5_reads/ > basecalling.bam
+
+# Dorado, only accept POD5
+dorado basecaller \
+--mm2-opts "-x map-ont" \
+--no-trim \
+--device cuda:0 \
+--reference reference.fasta \
+reinforced_basecaller_model_dorado/ \
+pod5_reads/ > basecalling.bam
 ```
 
 #### Unaligned (Output fastq)
-``` python
+``` shell
+# Bonito
 bonito basecaller \
 --chunksize 3600 \
 --device cuda:0 \
 reinforced_basecaller_model/ \
 fast5_or_pod5_reads/ > basecalling.fastq
+
+# Dorado, only accept POD5
+dorado basecaller \
+--mm2-opts "-x map-ont" \
+--no-trim \
+--device cuda:0 \
+--emit-fastq \
+reinforced_basecaller_model_dorado/ \
+pod5_reads/ > basecalling.fastq
 ```
 
 #### (Optional) K-mer model extraction use uncalled4 based on 5hmC-modified 6-mer model
 
-``` python
+``` shell
 uncalled4 train reference.fasta \
 gDNA_fast5/ \
 --bam-in basecalling.bam \
